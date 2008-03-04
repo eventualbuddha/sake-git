@@ -1,0 +1,8 @@
+[alias]
+	ci = !sake git:push
+	up = !sake git:update
+	upa = !sake git:update:all
+	open = !sake git:open NAME= -- $1
+	close = !sake git:close NAME= -- $1
+	fold = !sake git:fold
+	sq = !sake git:squash
