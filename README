@@ -6,6 +6,12 @@ make invoking them easier). Install them with:
 
 $ rake install
 
+Or, if you don't want to actually download this stuff, just use Sake:
+
+$ sake -i "http://github.com/eventualbuddha/sake-git/tree/master/git.rake?raw=true"
+
+
+
 
 Common Commands
 ---------------
@@ -19,6 +25,8 @@ git-svn project. Alias it to `git up' with this alias:
   up = !sake git:update
 
 
+
+
 $ sake git:push
 
 Commits any changes in your current branch not yet pushed upstream AND ports 'em over to master.
@@ -26,6 +34,8 @@ Another alias for ya:
 
 [alias]
   ci = !sake git:push
+
+
 
 
 $ sake git:open [NAME=mynewbranch]
@@ -47,6 +57,8 @@ $ git open
 * Name your branch: mynewbranch
 
 
+
+
 $ sake git:close [NAME=mynewbranch]
 
 This is open's brother, and should be used when you finish something and have already moved it to
@@ -55,6 +67,7 @@ everyone:
 
 [alias]
   close = !sake git:close NAME= -- $1
+
 
 
 
