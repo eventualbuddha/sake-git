@@ -138,6 +138,15 @@ task 'git:open' => [ 'git:helpers' ] do
     Readline.readline.chomp)
   end)
   branch = git_branch
+  if git_branches.include?(newbranch)
+    if newbranch == branch
+      puts(%{* Already on branch "#{newbranch}"})
+    else
+      puts(%{* Switching to existing branch "#{newbranch}"})
+      `git-checkout #{newbranch}`
+    end
+    exit(0)
+  end
   unless (branch == "master") then
     puts("* Switching to master")
     `git-checkout master`
