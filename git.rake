@@ -206,7 +206,10 @@ end
 desc 'Converts an existing Subversion Repo into a Git Repository'
 task 'git:ify' do
   # Make sure we're in an svn repo
-  raise "This task can only be executed in an existing working copy! (No .svn-Folder found)" unless File.exists?("./.svn") && File.directory?("./.svn")
+  unless File.directory?("./.svn")
+    $stderr.puts "This task can only be executed in an existing working copy! (No .svn-Folder found)"
+    exit(1)
+  end
 
   # get svn info location
   svnurl = `svn info | grep "^URL:"`.gsub('URL: ','').chomp
