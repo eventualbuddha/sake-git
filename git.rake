@@ -202,3 +202,19 @@ task 'git:update:all' => [ 'git:helpers' ] do
     `git-checkout #{branch} 2>/dev/null` if switch
   end
 end
+
+desc 'Converts an existing Subversion Repo into a Git Repository'
+task 'git:ify' do
+  # Make sure we're in an svn repo
+  raise "This task can only be executed in an existing working copy! (No .svn-Folder found)" unless File.exists?("./.svn") && File.directory?("./.svn")
+
+  # get svn info location
+  svnurl = `svn info | grep "^URL:"`.gsub('URL: ','').chomp
+
+  # project = basename
+  project = "../#{File.basename(Dir.pwd)}.git"
+
+  puts cmd = "git svn clone #{svnurl} #{project}"
+
+  `#{cmd}`
+end
