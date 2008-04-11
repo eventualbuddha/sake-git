@@ -212,7 +212,7 @@ task 'git:ify' do
   end
 
   # get svn info location
-  svnurl = `svn info | grep "^URL:"`.gsub('URL: ','').chomp
+  svnurl = %x(svn info).grep(/^URL:/).first.gsub('URL: ','').chomp
 
   # project = basename
   project = "../#{File.basename(Dir.pwd)}.git"
