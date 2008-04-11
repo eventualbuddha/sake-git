@@ -1,7 +1,7 @@
 desc "This is just here for the other tasks and isn't intended for your use"
 task 'git:helpers' do
   def git_branch
-    `git-branch | grep \"*\"`.strip[(2..-1)]
+    `git-branch`.grep(/^\*/).first.strip[(2..-1)]
   end
   def git_branches
     `git-branch`.to_a.map { |b| b[(2..-1)].chomp }
