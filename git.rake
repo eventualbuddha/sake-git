@@ -44,7 +44,7 @@ task 'git:helpers' do
     git_svn? ? (sh("git-svn dcommit")) : (sh("git-push"))
   end
   def git_svn?
-    `git-branch -a` =~ /^\s*git-svn/
+    not File.readlines(".git/config").grep(/^\[svn-remote "svn"\]\s*$/).empty?
   end
   def argv
     ARGV.inject([]) do |argv, arg|
