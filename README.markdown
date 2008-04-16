@@ -1,0 +1,45 @@
+Sake-Git
+========
+
+Here are a few Sake tasks to make developing with Git easier (and some corresponding Git aliases to 
+make invoking them easier). Install them with:
+
+    $ rake install
+
+Or, if you don't want to actually download this stuff, just use Sake:
+
+    $ sake -i "http://github.com/eventualbuddha/sake-git/tree/master/git.rake?raw=true"
+
+Common Commands
+---------------
+
+    $ sake git:update
+
+Updates your current git repository, autodetecting whether you have a regular ol' git project or a
+git-svn project. I recommend aliasing it `git up'.
+
+    $ sake git:push
+
+Commits any changes in your current branch not yet pushed upstream AND ports 'em over to master. I use `git ci' for this one.
+
+    $ sake git:open [NAME=mynewbranch]
+
+Creates a new branch off master. Think of this as opening an issue, or a new path of development. I use `git open' for this one, allowing you to call it like so:
+
+    $ git open mynewbranch
+
+You can even call it without the branch name and it'll ask you for it:
+
+    $ git open
+    * Name your branch: mynewbranch
+
+    $ sake git:close [NAME=mynewbranch]
+
+This is open's brother, and should be used when you finish something and have already moved it to
+master or upstream. If you haven't yet, don't worry - this won't eat your data. Like open, this one I alias to `git close'.
+
+Credits
+-------
+
+Thanks to Coda Hale and everyone else at Wesabe for trying these out when I first wrote them and
+contributing tasks of their own, and to the Rubinius folks for giving me the idea in the first place.
