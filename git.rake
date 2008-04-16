@@ -35,7 +35,7 @@ task 'git:helpers' do
   end
   def git_rebase(what = nil)
     if git_svn? then
-      sh("git-rebase git-svn #{what}")
+      sh("git-svn rebase --local #{what}")
     else
       sh("git-rebase origin/master #{what}")
     end
