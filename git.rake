@@ -1,5 +1,8 @@
 desc "This is just here for the other tasks and isn't intended for your use"
 task 'git:helpers' do
+  class GitError < RuntimeError; end
+  class GitRebaseError < GitError; end
+  
   def git_branch
     `git-branch`.grep(/^\*/).first.strip[(2..-1)]
   end
@@ -30,14 +33,37 @@ task 'git:helpers' do
         end
     end
   end
+  
+  def git_checkout(what = nil)
+    branch = git_branch
+    sh("git-checkout #{what}") if branch != what
+    if block_given?
+      yield
+      sh("git-checkout #{branch}") if branch != what
+    end
+  end
+  
   def git_fetch
     sh("git#{"-svn" if git_svn?} fetch")
   end
+  
+  def assert_command_succeeded(*args)
+    raise *args if $?.exitstatus != 0
+  end
+  
+  def assert_rebase_succeeded(what = nil)
+    assert_command_succeeded GitRebaseError, "conflict while rebasing branch #{what}"
+  end
+  
   def git_rebase(what = nil)
     if git_svn? then
-      sh("git-svn rebase --local #{what}")
+      git_checkout what do
+        sh("git-svn rebase --local")
+        assert_rebase_succeeded what
+      end
     else
       sh("git-rebase origin/master #{what}")
+      assert_rebase_succeeded what
     end
   end
   def git_push
@@ -143,18 +169,18 @@ task 'git:open' => [ 'git:helpers' ] do
       puts(%{* Already on branch "#{newbranch}"})
     else
       puts(%{* Switching to existing branch "#{newbranch}"})
-      `git-checkout #{newbranch}`
+      git_checkout newbranch
     end
     exit(0)
   end
   unless (branch == "master") then
     puts("* Switching to master")
-    `git-checkout master`
+    git_checkout 'master'
   end
   `git-checkout -b #{newbranch}`
   unless $?.exitstatus.zero? then
     puts("* Couldn't create branch #{newbranch}, switching back to #{branch}")
-    `git-checkout #{branch}`
+    git_checkout branch
     exit(1)
   end
   exit(0)
@@ -192,8 +218,9 @@ task 'git:update:all' => [ 'git:helpers' ] do
     switch = true
     git_branches.each do |b|
       puts("* Updating branch #{b}")
-      git_rebase(b)
-      unless $?.exitstatus.zero? then
+      begin
+        git_rebase(b)
+      rescue GitRebaseError => e
         puts("* Couldn't rebase #{b}, aborting so you can clean it up")
         switch = false
         break
