@@ -1,4 +1,3 @@
-desc "This is just here for the other tasks and isn't intended for your use"
 task 'git:helpers' do
   class GitError < RuntimeError; end
   class GitRebaseError < GitError; end
