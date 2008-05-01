@@ -118,7 +118,7 @@ task 'git:update' => [ 'git:helpers' ] do
   end
 end
 
-desc 'Push local commits into the Wesabe repository'
+desc 'Push local commits into the remote repository'
 task 'git:push' => [ 'git:update' ] do
   git_stash do
     puts("* Pushing changes...")
