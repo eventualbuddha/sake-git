@@ -1,5 +1,7 @@
 h1. Sake-Git
 
+*NOTE:* These tasks are being deprecated in favor of thor-git, availble at http://github.com/cypher/thor-git. I'm continuing to work on them there, but decided to switch from `sake` to `thor` because `sake`, as cool as it is, still uses `rake`. Check out `thor` at http://github.com/wycats/thor.
+
 Here are a few Sake tasks to make developing with Git easier (and some corresponding Git aliases to 
 make invoking them easier). Install them with:
 
